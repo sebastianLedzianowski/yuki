@@ -80,7 +80,7 @@ target/
 celerybeat-schedule
 
 # dotenv
-quotes/.env
+yuki/.env
 
 # virtualenv
 venv/
@@ -192,3 +192,5 @@ days_to_birthday
 #.vscode setup
 .vscode
 main
+
+postgres-data/

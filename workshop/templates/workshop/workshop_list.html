@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<head>
+    <title>Moje Sklepy</title>
+</head>
+<body>
+    <h1>Moje Sklepy</h1>
+    <ul>
+        {% for shop in shops %}
+            <li>{{ shop.shop_name }} (NIP: {{ shop.nip }}, REGON: {{ shop.regon }}, Data utworzenia: {{shop.create_at}}), {{shop.avatar}}</li>
+        {% empty %}
+            <li>Nie masz jeszcze żadnych sklepów.</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'workshop_create' %}">Dodaj nowy sklep</a>
+</body>
+{% endblock %}

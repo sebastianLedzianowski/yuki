@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<head>
+    <title>Utwórz Sklep</title>
+</head>
+<body>
+    <h1>Utwórz nowy Sklep</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Zapisz</button>
+    </form>
+    <a href="{% url 'workshop_list' %}">Powrót do listy sklepów</a>
+</body>
+
+{% endblock %}

@@ -1,9 +1,7 @@
-from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
-from django.core.validators import RegexValidator
 from django.db import models
+from django.contrib.auth.models import User
+from django.core.validators import RegexValidator
 from PIL import Image
-
 
 class ShopProfile(models.Model):
     nip_validator = RegexValidator(
@@ -17,36 +15,32 @@ class ShopProfile(models.Model):
         code='invalid_regon'
     )
 
+    objects = models.Manager()
+
     workshop_id = models.BigAutoField(primary_key=True)
     shop_name = models.CharField(max_length=100, blank=True, null=True)
-    nip = models.CharField(validators=[nip_validator], max_length=10)
-    regon = models.CharField(validators=[regon_validator], max_length=14)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    nip = models.CharField(validators=[nip_validator], max_length=10, unique=True)
+    regon = models.CharField(validators=[regon_validator], max_length=14, unique=True)
     create_at = models.DateTimeField(auto_now_add=True)
     avatar = models.ImageField(default='workshop.png', upload_to='workshop_images')
-
+    user= models.ForeignKey(User, on_delete=models.CASCADE, related_name='workshop')
 
     class Meta:
         db_table = "workshop"
 
-
     def __str__(self):
-        return self.shop_name
-
+        return self.shop_name if self.shop_name else "Unnamed Shop"
 
     def save(self, *args, **kwargs):
-        try:
-            super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
-            img = Image.open(self.avatar.path)
+        img = Image.open(self.avatar.path)
 
-            if img.height > 250 or img.width > 250:
-                new_img = (250, 250)
-                img.thumbnail(new_img)
-                img.save(self.avatar.path)
+        if img.height > 250 or img.width > 250:
+            new_img = (250, 250)
+            img.thumbnail(new_img)
+            img.save(self.avatar.path)
 
-        except (FileNotFoundError, ValidationError, IOError) as e:
-            print(f"Nie udało się przetworzyć awatara: {e}")
 
 
 class AuthorizedUser(models.Model):
