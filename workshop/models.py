@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from PIL import Image
 
-class ShopProfile(models.Model):
+class WorkshopProfile(models.Model):
     nip_validator = RegexValidator(
         regex=r'^\d{10}$',
         message="NIP musi składać się z 10 cyfr.",
@@ -17,19 +17,19 @@ class ShopProfile(models.Model):
 
     objects = models.Manager()
 
-    workshop_id = models.BigAutoField(primary_key=True)
-    shop_name = models.CharField(max_length=100, blank=True, null=True)
+    id = models.BigAutoField(primary_key=True)
+    name = models.CharField(max_length=100, blank=True, null=True)
     nip = models.CharField(validators=[nip_validator], max_length=10, unique=True)
     regon = models.CharField(validators=[regon_validator], max_length=14, unique=True)
     create_at = models.DateTimeField(auto_now_add=True)
     avatar = models.ImageField(default='workshop.png', upload_to='workshop_images')
-    user= models.ForeignKey(User, on_delete=models.CASCADE, related_name='workshop')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='workshop')
 
     class Meta:
         db_table = "workshop"
 
     def __str__(self):
-        return self.shop_name if self.shop_name else "Unnamed Shop"
+        return self.name if self.name else "Brak nazwy"
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -45,7 +45,7 @@ class ShopProfile(models.Model):
 
 class AuthorizedUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='authorized_workshops')
-    workshop = models.ForeignKey(ShopProfile, on_delete=models.CASCADE, related_name='authorized_users')
+    workshop = models.ForeignKey(WorkshopProfile, on_delete=models.CASCADE, related_name='authorized_users')
 
 
     class Meta:

@@ -2,10 +2,10 @@ from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.dispatch import receiver
 
-from .models import ShopProfile
+from .models import WorkshopProfile
 
 
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):
     if created:
-        ShopProfile.objects.create(user=instance)
+        WorkshopProfile.objects.create(user=instance)

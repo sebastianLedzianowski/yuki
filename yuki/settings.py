@@ -37,8 +37,8 @@ INSTALLED_APPS = [
 
     # My app
 
-    'workshop.apps.WorkshopConfig',
-    # 'users.apps.UserConfig'
+    'workshop',
+    'users'
 ]
 
 MIDDLEWARE = [

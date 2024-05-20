@@ -1,0 +1,15 @@
+{% extends 'base.html' %} 
+
+{% block content %}
+<h2>Delete Workshop</h2>
+
+<form method="POST">
+  {% csrf_token %}
+  <p>Czy na pewno chcesz usunąć warsztat "{{workshop.name}}"?</p>
+  <div>
+    <button type="submit">Tak, Usuń</button>
+    <a href="{% url 'workshop_list' %}">Anuluj</a>
+  </div>
+</form>
+
+{% endblock content %}

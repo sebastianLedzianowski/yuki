@@ -8,8 +8,13 @@
 <body>
     <h1>Moje Sklepy</h1>
     <ul>
-        {% for shop in shops %}
-            <li>{{ shop.shop_name }} (NIP: {{ shop.nip }}, REGON: {{ shop.regon }}, Data utworzenia: {{shop.create_at}}), {{shop.avatar}}</li>
+        {% for workshop in workshops %}
+            <li>{{ workshop.name }} (NIP: {{ workshop.nip }}, REGON: {{ workshop.regon }}, Data utworzenia: {{workshop.create_at}})</li>
+            {% if request.user.is_authenticated and request.user == workshop.user %}
+            <p>
+                <a href="{% url 'workshop_edit' workshop.id %}">Edit</a>
+                <a href="{% url 'workshop_delete' workshop.id %}">Delete</a>
+            </p>
         {% empty %}
             <li>Nie masz jeszcze żadnych sklepów.</li>
         {% endfor %}

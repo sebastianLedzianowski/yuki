@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import ShopProfile, AuthorizedUser
+from .models import WorkshopProfile, AuthorizedUser
 
-admin.site.register(ShopProfile)
+admin.site.register(WorkshopProfile)
 admin.site.register(AuthorizedUser)
