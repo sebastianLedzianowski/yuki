@@ -5,9 +5,8 @@ from .forms import LoginForm, RegisterForm
 
 
 def sign_up(request):
-    if request.method == 'GET':
-        form = RegisterForm()
-        return render(request, 'users/register.html', {'form': form})
+    if request.user.is_authenticated:
+        return redirect('workshop_list')
 
     if request.method == 'POST':
         form = RegisterForm(request.POST)
@@ -18,8 +17,10 @@ def sign_up(request):
             messages.success(request, 'Rejestracja zakonczona sukcesem.')
             login(request, user)
             return redirect('workshop_list')
-        else:
-            return render(request, 'users/register.html', {'form': form})
+    else:
+        form = RegisterForm()
+
+    return render(request, 'users/register.html', {'form': form})
 
 
 def sing_in(request):
@@ -29,7 +30,6 @@ def sing_in(request):
     if request.method == 'GET':
         if request.user.is_authenticated:
             return redirect('posts')
-
         return render(request, 'users/login.html', {'form': form_get})
 
     elif request.method == 'POST':
@@ -41,7 +41,6 @@ def sing_in(request):
                 login(request, user)
                 messages.success(request, f'Cześć {username.title()}, witamy z powrotem!')
                 return redirect('workshop_list')
-
         messages.error(request, f'Nieprawidłowy login lub hasło.')
         return render(request, 'users/login.html', {'form': form_get})
 
