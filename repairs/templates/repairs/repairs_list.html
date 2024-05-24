@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{%block content%}
+
+<h1>Twoje naprawy</h1>
+<ul>
+    {% for repair in repairs %}
+        <li>
+            <a href="{% url 'repair_detail' repair.id %}">{{ repair.description }} - {{ repair.status }}</a>
+        </li>
+    {% endfor %}
+</ul>
+<a href="{% url 'repair_create' %}">Dodaj nową naprawę</a>
+
+
+{%endblock content%}

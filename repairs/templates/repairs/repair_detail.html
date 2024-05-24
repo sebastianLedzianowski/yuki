@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{%block content%}
+
+<h1>Naprawa samochodu</h1>
+<p>Opis: {{ repair.description }}</p>
+<p>Data rozpoczęcia: {{ repair.start_date }}</p>
+<p>Data zakończenia: {{ repair.end_date }}</p>
+<p>Koszt: {{ repair.cost }}</p>
+<p>Status: {{ repair.status }}</p>
+<img src="{{ repair.images.url }}" alt="Zdjęcia naprawy">
+<p><a href="{{ repair.receipt.url }}">Paragon</a></p>
+<p><a href="{{ repair.invoice.url }}">Faktura</a></p>
+
+
+{%endblock content%}
