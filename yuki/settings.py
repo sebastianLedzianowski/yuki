@@ -43,7 +43,10 @@ INSTALLED_APPS = [
     # My app
 
     'workshop',
-    'users'
+    'cars',
+    'repairs',
+    'users',
+    'django_rq',
 ]
 
 MIDDLEWARE = [
@@ -90,6 +93,17 @@ DATABASES = {
         'PORT': env('DATABASE_PORT'),
     }
 }
+
+
+RQ_QUEUES = {
+    'default': {
+        'HOST': env('RQ_HOST'),
+        'PORT': env('RQ_PORT'),
+        'DB': env('RQ_DB'),
+        'DEFAULT_TIMEOUT': env('RQ_DEFAULT_TIMEOUT'),
+    }
+}
+
 
 CACHES = {
     'default': {

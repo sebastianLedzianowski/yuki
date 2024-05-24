@@ -5,8 +5,11 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('workshop.urls')),
-    path('', include('users.urls')),
+    path('workshop/', include('workshop.urls')),
+    path('cars/', include('cars.urls')),
+    path('repairs/', include('repairs.urls')),
+    path('users/', include('users.urls')),
+    path('django-rq/', include('django_rq.urls')),
 ]
 
 if settings.DEBUG:
