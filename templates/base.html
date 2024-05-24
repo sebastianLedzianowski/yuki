@@ -1,6 +1,7 @@
 {%load static %}
 <!DOCTYPE html>
 <html lang="en">
+
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -31,7 +32,11 @@
 	    {%block content%}
 	    {%endblock content%}
   	</main>
-
+	<footer class="footer">
+        <div class="container-center">
+            <p>&copy; Copyright {% now "Y" %} by <a href="https://github.com/sebastianLedzianowski">Sebastian Ledzianowski</a></p>
+        </div>
+    </footer>
   </body>
 </html>
 </html>
