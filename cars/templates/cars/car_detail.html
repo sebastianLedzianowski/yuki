@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<h1>{{ car.make }} {{ car.model }}</h1>
+<p>VIN: {{ car.vin }}</p>
+<p>Rejestracja: {{ car.registration_number }}</p>
+<p>Rok: {{ car.year }}</p>
+<img src="{{ car.image.url }}" alt="Zdjęcie samochodu">
+
+{% endblock %}
