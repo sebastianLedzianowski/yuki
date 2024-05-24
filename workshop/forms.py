@@ -1,7 +1,7 @@
 from django import forms
-from .models import WorkshopProfile
+from .models import Workshop
 
-class WorkshopProfileForm(forms.ModelForm):
+class WorkshopForm(forms.ModelForm):
     class Meta:
-        model = WorkshopProfile
+        model = Workshop
         fields = ['name', 'nip', 'regon', 'avatar']

@@ -11,10 +11,11 @@
         {% for workshop in workshops %}
             <li>{{ workshop.name }} (NIP: {{ workshop.nip }}, REGON: {{ workshop.regon }}, Data utworzenia: {{workshop.create_at}})</li>
             {% if request.user.is_authenticated and request.user == workshop.user %}
-            <p>
-                <a href="{% url 'workshop_edit' workshop.id %}">Edit</a>
-                <a href="{% url 'workshop_delete' workshop.id %}">Delete</a>
-            </p>
+                <p>
+                    <a href="{% url 'workshop_edit' workshop.id %}">Edit</a>
+                    <a href="{% url 'workshop_delete' workshop.id %}">Delete</a>
+                </p>
+            {% endif %}
         {% empty %}
             <li>Nie masz jeszcze żadnych sklepów.</li>
         {% endfor %}

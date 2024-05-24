@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from PIL import Image
 
-class WorkshopProfile(models.Model):
+class Workshop(models.Model):
     nip_validator = RegexValidator(
         regex=r'^\d{10}$',
         message="NIP musi składać się z 10 cyfr.",
@@ -45,7 +45,7 @@ class WorkshopProfile(models.Model):
 
 class AuthorizedUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='authorized_workshops')
-    workshop = models.ForeignKey(WorkshopProfile, on_delete=models.CASCADE, related_name='authorized_users')
+    workshop = models.ForeignKey(Workshop, on_delete=models.CASCADE, related_name='authorized_users')
 
 
     class Meta:

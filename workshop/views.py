@@ -1,13 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import WorkshopProfileForm
-from .models import WorkshopProfile
+from .forms import WorkshopForm
+from .models import Workshop
 
 
 @login_required
 def workshop_delete(request, id):
-    queryset = WorkshopProfile.objects.filter(author=request.user)
+    queryset = Workshop.objects.filter(user=request.user)
     workshop = get_object_or_404(queryset, pk=id)
     context = {'workshop': workshop}
 
@@ -20,10 +20,10 @@ def workshop_delete(request, id):
 
 @login_required
 def workshop_edit(request, id):
-    queryset = WorkshopProfile.objects.filter(author=request.user)
+    queryset = Workshop.objects.filter(user=request.user)
     workshop = get_object_or_404(queryset, id=id)
-    context = {'form': WorkshopProfileForm(instance=workshop), 'id': id}
-    form = WorkshopProfileForm(request.POST, instance=workshop)
+    context = {'form': WorkshopForm(instance=workshop), 'id': id}
+    form = WorkshopForm(request.POST, instance=workshop)
 
     if request.method == 'GET':
         return render(request, 'workshop/workshop_edit.html', context)
@@ -42,8 +42,8 @@ def workshop_edit(request, id):
 
 @login_required
 def workshop_create(request):
-    context = {'form': WorkshopProfileForm()}
-    form = WorkshopProfileForm(request.POST, request.FILES)
+    context = {'form': WorkshopForm()}
+    form = WorkshopForm(request.POST, request.FILES)
 
     if request.method == 'GET':
         return render(request, 'workshop/workshop_create.html', context)
@@ -62,5 +62,5 @@ def workshop_create(request):
 
 @login_required
 def workshop_list(request):
-    workshops = WorkshopProfile.objects.filter(user=request.user)
+    workshops = Workshop.objects.filter(user=request.user)
     return render(request, 'workshop/workshop_list.html', {'workshops': workshops})
