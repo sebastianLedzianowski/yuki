@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+            <form method="post" novaldiate class="card">
+                <h1>Strona w trakcie tworzenia</h1>
+                <p>Przepraszamy za wszelkie niedogodności. Aktualnie pracujemy nad rozwinięciem tej strony i testujemy
+                    jej funkcjonalności. Zachęcamy do korzystania z naszej platformy i zgłaszania wszelkich błędów,
+                    które napotkasz.</p>
+            </form>
+        </div>
+        <div class="col-md-3">
+            <li><a href="{% url 'workshop_list' %}" class="btn btn-outline">workshop_list</a></li>
+            <li><a href="{% url 'workshop_create' %}" class="btn btn-outline">workshop_create</a></li>
+            </div>
+    </div>
+</div>
+{% endblock content %}

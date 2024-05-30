@@ -2,11 +2,17 @@
 
 {% block content %}
 
-<h2>{% if id %} Edit {% else %} New {% endif %} WorkShop</h2>
-<form method="post" novalidate>
-	{% csrf_token %}
-	{{ form.as_p }}
-	<input type="submit" value="Save" />
-</form>
+<head>
+    <title>Edytuj warsztat</title>
+</head>
+<body>
+    <h2>Edytuj warsztat</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Zapisz zmiany</button>
+    </form>
+    <a href="{% url 'workshop_list' %}">Anuluj</a>
+</body>
 
 {% endblock content %}
