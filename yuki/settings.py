@@ -117,11 +117,11 @@ SESSION_CACHE_ALIAS = 'default'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_PORT = 587
+EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_HOST_PORT = env('EMAIL_HOST_PORT')
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'test.python.3.group@gmail.com'
-EMAIL_HOST_PASSWORD = 'allb pabr lduo loig'
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 
 
 # Password validation
