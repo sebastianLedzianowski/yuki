@@ -1,66 +1,72 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
+from django.urls import reverse_lazy
+from django.views.generic import TemplateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.list import ListView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from .forms import WorkshopForm
 from .models import Workshop
 
-@login_required
-def workshop_delete(request, id):
-    queryset = Workshop.objects.filter(owner=request.user)
-    workshop = get_object_or_404(queryset, pk=id)
-    context = {'workshop': workshop}
 
-    if request.method == 'GET':
-        return render(request, 'workshop/workshop_delete.html', context)
-    elif request.method == 'POST':
-        workshop.delete()
-        messages.success(request, 'Sklep został usunięty pomyślnie.')
-        return redirect('workshop_list')
+class WorkshopDeleteView(LoginRequiredMixin, DeleteView):
+    model = Workshop
+    template_name = 'workshop/workshop_delete.html'
+    context_object_name = 'workshop'
+    success_url = reverse_lazy('workshop_list')
 
-@login_required
-def workshop_edit(request, id):
-    queryset = Workshop.objects.filter(owner=request.user)
-    workshop = get_object_or_404(queryset, id=id)
+    def get_queryset(self):
+        return Workshop.objects.filter(owner=self.request.user)
 
-    if request.method == 'GET':
-        form = WorkshopForm(instance=workshop)
-        context = {'form': form, 'id': id}
-        return render(request, 'workshop/workshop_edit.html', context)
+    def delete(self, request, *args, **kwargs):
+        response = super().delete(request, *args, **kwargs)
+        messages.success(self.request, 'The workshop was deleted successfully.')
+        return response
 
-    elif request.method == 'POST':
-        form = WorkshopForm(request.POST, request.FILES, instance=workshop)
-        if form.is_valid():
-            workshop = form.save(commit=False)
-            workshop.owner = request.user
-            workshop.save()
-            messages.success(request, 'Sklep został zaktualizowany pomyślnie.')
-            return redirect('workshop_list')
-        else:
-            messages.error(request, 'Popraw następujące błędy:')
-            return render(request, 'workshop/workshop_edit.html', {'form': form, 'id': id})
 
-@login_required
-def workshop_create(request):
-    if request.method == 'POST':
-        form = WorkshopForm(request.POST, request.FILES)
-        if form.is_valid():
-            workshop = form.save(commit=False)
-            workshop.owner = request.user
-            workshop.save()
-            messages.success(request, 'Sklep został utworzony pomyślnie.')
-            return redirect('workshop_list')
-        else:
-            messages.error(request, 'Popraw następujące błędy:')
-            return render(request, 'workshop/workshop_create.html', {'form': form})
-    else:
-        form = WorkshopForm()
-        context = {'form': form}
-        return render(request, 'workshop/workshop_create.html', context)
+class WorkshopUpdateView(LoginRequiredMixin, UpdateView):
+    model = Workshop
+    form_class = WorkshopForm
+    template_name = 'workshop/workshop_edit.html'
+    success_url = reverse_lazy('workshop_list')
+    context_object_name = 'workshop'
 
-@login_required
-def workshop_list(request):
-    workshops = Workshop.objects.filter(owner=request.user)
-    return render(request, 'workshop/workshop_list.html', {'workshops': workshops})
+    def get_queryset(self):
+        return Workshop.objects.filter(owner=self.request.user)
 
-def home(request):
-    return render(request, 'home.html')
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        messages.success(self.request, 'The workshop has been successfully updated.')
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Correct the following errors:')
+        return super().form_invalid(form)
+
+
+class WorkshopCreateView(LoginRequiredMixin, CreateView):
+    model = Workshop
+    form_class = WorkshopForm
+    template_name = 'workshop/workshop_create.html'
+    success_url = reverse_lazy('workshop_list')
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        messages.success(self.request, 'The workshop was created successfully.')
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Correct the following errors:')
+        return super().form_invalid(form)
+
+
+class WorkshopListView(LoginRequiredMixin, ListView):
+    model = Workshop
+    template_name = 'workshop/workshop_list.html'
+    context_object_name = 'workshops'
+
+    def get_queryset(self):
+        return Workshop.objects.filter(owner=self.request.user)
+
+
+class HomeView(TemplateView):
+    template_name = 'index.html'

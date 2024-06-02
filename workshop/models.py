@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator, EmailValidator
 from PIL import Image
+import os
+from django.conf import settings
 
 nip_validator = RegexValidator(
     regex=r'^\d{10}$',
@@ -48,9 +50,11 @@ class Workshop(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
-        img = Image.open(self.avatar.path)
-
-        if img.height > 250 or img.width > 250:
-            new_img = (250, 250)
-            img.thumbnail(new_img)
-            img.save(self.avatar.path)
+        if self.avatar and hasattr(self.avatar, 'path'):
+            img_path = self.avatar.path
+            if os.path.exists(img_path):
+                img = Image.open(img_path)
+                if img.height > 300 or img.width > 300:
+                    output_size = (300, 300)
+                    img.thumbnail(output_size)
+                    img.save(img_path)
