@@ -1,120 +1,137 @@
 {% extends 'index.html' %}
 
 {% block content %}
-<div class="row">
-    <!-- Profile Preview -->
-    <div class="col-md-6">
-        <div class="card mb-4">
-            <div class="card-header text-center">
-                <h6 class="m-0 font-weight-bold text-primary">Profile Preview</h6>
-            </div>
-            <div class="card-body text-left">
-                {% if user.profile %}
-                <div class="text-center mb-4">
-                    <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}"
-                         class="avatar img-fluid rounded-circle"
-                         style="width: 200px; height: 200px; object-fit: cover;">
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <!-- Profile Preview -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header text-center">
+                        <h6 class="m-0 font-weight-bold text-primary">Profile Preview</h6>
+                    </div>
+                    <div class="card-body text-left">
+                        {% if user.profile %}
+                        <div class="text-center mb-4">
+                            <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}"
+                                class="avatar img-fluid rounded-circle" style="width: 200px; height: 200px; object-fit: cover;">
+                        </div>
+                        {% endif %}
+                        <div class="profile-info">
+                            <div class="form-group row">
+                                <label for="username" class="col-sm-4 col-form-label text-right">Username:</label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-plaintext">{{ user.username }}</p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="email" class="col-sm-4 col-form-label text-right">Email:</label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-plaintext">
+                                        <a href="mailto:{{ user.email }}" style="color: #333;">{{ user.email }}</a>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="first_name" class="col-sm-4 col-form-label text-right">First Name:</label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-plaintext">{{ user.first_name }}</p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="last_name" class="col-sm-4 col-form-label text-right">Last Name:</label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-plaintext">{{ user.last_name }}</p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="phone" class="col-sm-4 col-form-label text-right">Phone:</label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-plaintext">
+                                        {% if user.profile.phone %}
+                                        <a href="tel:+48{{ user.profile.phone }}" style="color: #333;">+48{{ user.profile.phone }}</a>
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                {% endif %}
-                <div class="profile-info">
-                    <div class="form-group row">
-                        <label for="username" class="col-sm-4 col-form-label text-right">Username:</label>
-                        <div class="col-sm-8">
-                            <p class="form-control-plaintext">{{ user.username }}</p>
-                        </div>
+            </div>
+
+            <!-- Profile Editing -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header text-center">
+                        <h6 class="m-0 font-weight-bold text-primary">Profile Editing</h6>
                     </div>
-                    <div class="form-group row">
-                        <label for="email" class="col-sm-4 col-form-label text-right">Email:</label>
-                        <div class="col-sm-8">
-                            <p class="form-control-plaintext">
-                                <a href="mailto:{{ user.email }}" style="color: #333;">{{ user.email }}</a>
-                            </p>
+                    <div class="card-body">
+                        {% if messages %}
+                        <div class="alert-danger text-center">
+                            {% for message in messages %}
+                            <p>{{ message }}</p>
+                            {% endfor %}
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="first_name" class="col-sm-4 col-form-label text-right">First Name:</label>
-                        <div class="col-sm-8">
-                            <p class="form-control-plaintext">{{ user.first_name }}</p>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="last_name" class="col-sm-4 col-form-label text-right">Last Name:</label>
-                        <div class="col-sm-8">
-                            <p class="form-control-plaintext">{{ user.last_name }}</p>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="phone" class="col-sm-4 col-form-label text-right">Phone:</label>
-                        <div class="col-sm-8">
-                            <p class="form-control-plaintext">
-                                {% if user.profile.phone %}
-                                <a href="tel:{{ user.profile.phone }}" style="color: #333;">{{ user.profile.phone }}</a>
-                                {% endif %}
-                            </p>
-                        </div>
+                        {% endif %}
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-group row">
+                                <label for="email" class="col-sm-4 col-form-label text-right">Email:</label>
+                                <div class="col-sm-8">
+                                    <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="first_name" class="col-sm-4 col-form-label text-right">First Name:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="first_name" name="first_name"
+                                        value="{{ user.first_name }}">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="last_name" class="col-sm-4 col-form-label text-right">Last Name:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="last_name" name="last_name"
+                                        value="{{ user.last_name }}">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="phone" class="col-sm-4 col-form-label text-right">Phone:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="phone" name="phone"
+                                        value="{% if user.profile.phone %}{{ user.profile.phone }}{% endif %}">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="avatar" class="col-sm-4 col-form-label text-right">Avatar:</label>
+                                <div class="col-sm-8">
+                                    <input type="file" name="avatar" id="avatar">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-12 text-center">
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Profile Editing -->
-    <div class="col-md-6">
-        <div class="card mb-4">
-            <div class="card-header text-center">
-                <h6 class="m-0 font-weight-bold text-primary">Profile Editing</h6>
-            </div>
-            <div class="card-body">
-                {% if messages %}
-                <div class="alert-danger text-center">
-                    {% for message in messages %}
-                    <p>{{ message }}</p>
-                    {% endfor %}
-                </div>
-                {% endif %}
-                <form method="POST" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <div class="form-group row">
-                        <label for="email" class="col-sm-4 col-form-label text-right">Email:</label>
-                        <div class="col-sm-8">
-                            <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="first_name" class="col-sm-4 col-form-label text-right">First Name:</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="first_name" name="first_name"
-                                   value="{{ user.first_name }}">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="last_name" class="col-sm-4 col-form-label text-right">Last Name:</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="last_name" name="last_name"
-                                   value="{{ user.last_name }}">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="phone" class="col-sm-4 col-form-label text-right">Phone:</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="phone" name="phone"
-                                   value="{% if user.profile.phone %}{{ user.profile.phone }}{% endif %}">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="avatar" class="col-sm-4 col-form-label text-right">Avatar:</label>
-                        <div class="col-sm-8">
-                            <input type="file" name="avatar" id="avatar">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-sm-12 text-center">
-                            <button type="submit" class="btn btn-primary">Save Changes</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+</body>
+
+</html>
 {% endblock %}

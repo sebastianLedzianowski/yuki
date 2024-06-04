@@ -2,27 +2,25 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator, EmailValidator
 from PIL import Image
-import os
-from django.conf import settings
 
 nip_validator = RegexValidator(
     regex=r'^\d{10}$',
-    message="NIP musi składać się z 10 cyfr.",
+    message="The NIP must consist of 10 digits.",
     code='invalid_nip'
 )
 regon_validator = RegexValidator(
     regex=r'^\d{9}$|^\d{14}$',
-    message="REGON musi składać się z 9 lub 14 cyfr.",
+    message="The REGON must consist of 9 or 14 digits.",
     code='invalid_regon'
 )
 phone_validator = RegexValidator(
     regex=r'^\d{9}$',
-    message="Numer telefonu musi składać się dokładnie z 9 cyfr.",
+    message="The phone number must consist of exactly 9 digits.",
     code='invalid_phone'
 )
 
 email_validator = EmailValidator(
-    message="Podany adres email jest niepoprawny.",
+    message="The email address you provided is invalid.",
     code='invalid_email'
 )
 
@@ -45,16 +43,13 @@ class Workshop(models.Model):
         db_table = "workshop"
 
     def __str__(self):
-        return self.name if self.name else "Brak nazwy"
+        return self.name if self.name else "No Name"
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
-        if self.avatar and hasattr(self.avatar, 'path'):
-            img_path = self.avatar.path
-            if os.path.exists(img_path):
-                img = Image.open(img_path)
-                if img.height > 300 or img.width > 300:
-                    output_size = (300, 300)
-                    img.thumbnail(output_size)
-                    img.save(img_path)
+        img = Image.open(self.avatar.path)
+        if img.height > 300 or img.width > 300:
+            output_size = (300, 300)
+            img.thumbnail(output_size)
+            img.save(self.avatar.path)
