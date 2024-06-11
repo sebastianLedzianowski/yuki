@@ -1,18 +1,32 @@
-{% extends 'base.html' %}
+{% extends 'index.html' %}
 
 {% block content %}
-
 <head>
-    <title>Utwórz Sklep</title>
+    <title>Create Workshop</title>
 </head>
-<body>
-    <h1>Utwórz nowy Sklep</h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Zapisz</button>
-    </form>
-    <a href="{% url 'workshop_list' %}">Powrót do listy sklepów</a>
-</body>
+<div class="container">
+    <div class="row">
+        <!-- Create Workshop -->
+        <div class="col-md-12 ">
+            <div class="card mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Create New Workshop</h6>
+                </div>
+                <div class="card-body text-left">
+                    <div class="col-md-6">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
 
 {% endblock %}

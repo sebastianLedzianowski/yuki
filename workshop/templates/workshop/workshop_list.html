@@ -10,14 +10,14 @@
                 <h6 class="m-0 font-weight-bold text-primary">{{ workshop.name }}</h6>
                 <div class="dropdown no-arrow">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink{{ workshop.id }}"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                        aria-labelledby="dropdownMenuLink{{ workshop.id }}">
+                         aria-labelledby="dropdownMenuLink{{ workshop.id }}">
                         <div class="dropdown-header">Options:</div>
-                        <a class="dropdown-item" href="{% url 'workshop_edit' workshop.id %}">Edit</a>
-                        <a class="dropdown-item" href="{% url 'workshop_delete' workshop.id %}">Delete</a>
+                        <a class="dropdown-item" href="{% url 'workshop_edit' workshop.pk %}">Edit</a>
+                        <a class="dropdown-item text-danger" href="#" data-toggle="modal" data-target="#deleteWorkshopModal" data-workshop-id="{{ workshop.pk }}" data-workshop-name="{{ workshop.name }}">Delete</a>
                     </div>
                 </div>
             </div>
@@ -50,4 +50,44 @@
     </div>
     {% endfor %}
 </div>
+
+<!-- Delete Workshop Modal-->
+<div class="modal fade" id="deleteWorkshopModal" tabindex="-1" role="dialog" aria-labelledby="deleteWorkshopModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteWorkshopModalLabel">Delete Workshop</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form id="deleteWorkshopForm" method="POST" action="">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <p>Are you sure you want to delete the workshop "<span id="workshopName"></span>"?</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-primary alert-danger" type="submit">Yes, Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    $('#deleteWorkshopModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget)
+        var workshopId = button.data('workshop-id')
+        var workshopName = button.data('workshop-name')
+        var modal = $(this)
+        var form = modal.find('form')
+
+        modal.find('#workshopName').text(workshopName)
+        form.attr('action', '{% url "workshop_delete" 0 %}'.replace('0', workshopId))
+    })
+})
+</script>
+
 {% endblock %}
