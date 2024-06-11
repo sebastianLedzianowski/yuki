@@ -77,13 +77,6 @@
                         <h6 class="m-0 font-weight-bold text-primary">Profile Editing</h6>
                     </div>
                     <div class="card-body">
-                        {% if messages %}
-                        <div class="alert-danger text-center">
-                            {% for message in messages %}
-                            <p>{{ message }}</p>
-                            {% endfor %}
-                        </div>
-                        {% endif %}
                         <form method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
                             <div class="form-group row">
