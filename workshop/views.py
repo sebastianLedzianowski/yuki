@@ -10,8 +10,6 @@ from .models import Workshop
 
 class WorkshopDeleteView(LoginRequiredMixin, DeleteView):
     model = Workshop
-    template_name = 'workshop/workshop_delete.html'
-    context_object_name = 'workshop'
     success_url = reverse_lazy('workshop_list')
 
     def get_queryset(self):
@@ -39,7 +37,7 @@ class WorkshopUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        messages.error(self.request, 'Correct the following errors:')
+        messages.warning(self.request, 'Correct the following errors:')
         return super().form_invalid(form)
 
 
@@ -55,7 +53,7 @@ class WorkshopCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        messages.error(self.request, 'Correct the following errors:')
+        messages.warning(self.request, 'Correct the following errors:')
         return super().form_invalid(form)
 
 

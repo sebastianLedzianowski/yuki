@@ -6,4 +6,4 @@ class WorkshopForm(forms.ModelForm):
 
     class Meta:
         model = Workshop
-        fields = ['name', 'nip', 'regon', 'address', 'phone']
+        fields = ['name', 'nip', 'regon', 'address', 'phone', 'avatar']
