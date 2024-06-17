@@ -10,7 +10,7 @@
         <div class="col-md-12 ">
             <div class="card mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Create New Workshop</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Search in CEIDG</h6>
                 </div>
                 <div class="card-body text-left">
                     <div class="col-md-6">
@@ -18,13 +18,29 @@
                             {% csrf_token %}
                             {{ form.as_p }}
                             <div class="text-center">
-                                <button type="submit" class="btn btn-primary">Save</button>
+                                <button type="submit" class="btn btn-primary">Search</button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
+        {% if data %}
+    <div class="card mt-4">
+        <div class="card-header">
+            <h6 class="m-0 font-weight-bold text-primary">Search Results</h6>
+        </div>
+        <div class="card-body">
+            <pre>{{ data|safe }}</pre>
+            <form method="post" action="{% url 'ceidg_confirm' %}">
+                {% csrf_token %}
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success">Add to Database</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endif %}
     </div>
 </div>
 </div>
