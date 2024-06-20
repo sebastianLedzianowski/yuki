@@ -130,7 +130,6 @@ EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 
 JWT_SECRET_KEY = env('JWT_SECRET_KEY')
 JWT_ALGORITHM = env('JWT_ALGORITHM')
-JWT_EXPIRATION_DELTA = datetime.timedelta(days=30)
 
 
 # Password validation
