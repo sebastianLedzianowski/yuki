@@ -10,6 +10,7 @@ urlpatterns = [
     path('repairs/', include('repairs.urls')),
     path('', include('users.urls')),
     path('django-rq/', include('django_rq.urls')),
+    path('tokens/', include('tokens.urls')),
 ]
 
 if settings.DEBUG:

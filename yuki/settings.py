@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+import datetime
 import environ
 
 # Initialise environment variables
@@ -42,6 +43,8 @@ INSTALLED_APPS = [
     'repairs',
     'users',
     'django_rq',
+    'tokens'
+
 ]
 
 MIDDLEWARE = [
@@ -122,6 +125,12 @@ EMAIL_HOST_PORT = env('EMAIL_HOST_PORT')
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+
+# Tokens settings
+
+JWT_SECRET_KEY = env('JWT_SECRET_KEY')
+JWT_ALGORITHM = env('JWT_ALGORITHM')
+JWT_EXPIRATION_DELTA = datetime.timedelta(days=30)
 
 
 # Password validation

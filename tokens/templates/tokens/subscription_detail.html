@@ -1,0 +1,41 @@
+{% extends "index.html" %}
+
+{% block content %}
+<h2>Subscription Details</h2>
+
+<p><strong>Workshop:</strong> {{ workshop.name }}</p>
+
+{% if subscription %}
+    <p><strong>Subscription Start Date:</strong> {{ subscription.start_date }}</p>
+    <p><strong>Subscription End Date:</strong> {{ subscription.end_date }}</p>
+    <p><strong>Subscription Status:</strong> {% if subscription.is_active %}Active{% else %}Inactive{% endif %}</p>
+
+    <h3>Access Tokens</h3>
+    {% if tokens %}
+        <ul>
+        {% for token in tokens %}
+            <li>
+                <p><strong>Created At:</strong> {{ token.created_at }}</p>
+                <p><strong>Expiration Date:</strong> {{ token.expiration_date }}</p>
+                <p><strong>Status:</strong> {% if token.is_valid %}Valid{% else %}Expired{% endif %}</p>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No tokens available.</p>
+    {% endif %}
+
+{% else %}
+    <p>No subscription purchased for this workshop.</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Purchase Subscription</button>
+    </form>
+{% endif %}
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert {{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+{% endblock %}

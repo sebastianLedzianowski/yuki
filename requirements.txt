@@ -9,6 +9,7 @@ django-rq==2.10.2
 idna==3.7
 pillow==10.3.0
 psycopg2-binary==2.9.9
+PyJWT==2.8.0
 redis==5.0.4
 requests==2.32.3
 rq==1.16.2
