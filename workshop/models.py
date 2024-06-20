@@ -16,10 +16,9 @@ class Workshop(models.Model):
     phone = models.CharField(validators=[phone_validator], max_length=9, null=True, blank=True)
     email = models.EmailField(validators=[email_validator], max_length=254, null=True, blank=True)
     create_at = models.DateTimeField(auto_now_add=True)
-    expiration_date = models.DateTimeField(null=True, blank=True)
-    access_token = models.TextField(null=True, blank=True)
     avatar = models.ImageField(default='workshop.png', upload_to='workshop_images')
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='workshop')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='workshops')
+
 
     class Meta:
         db_table = "workshop"
