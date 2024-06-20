@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 from django.utils import timezone
@@ -7,7 +8,7 @@ from utils.create_def import create_access_token, create_subscription
 from workshop.models import Workshop
 
 
-class SubscriptionView(View):
+class SubscriptionView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         workshop = get_object_or_404(Workshop, pk=kwargs['pk'], owner=request.user)
         subscription = getattr(workshop, 'subscription', None)
