@@ -1,0 +1,34 @@
+{% extends "index.html" %}
+
+{% block content %}
+<h2>Workshop Details</h2>
+<p><strong>Name:</strong> {{ workshop.name }}</p>
+<p><strong>NIP:</strong> {{ workshop.nip }}</p>
+<p><strong>REGON:</strong> {{ workshop.regon }}</p>
+<p><strong>Address:</strong> {{ workshop.address }}</p>
+<p><strong>Phone:</strong> {{ workshop.phone }}</p>
+<p><strong>Email:</strong> {{ workshop.email }}</p>
+<p><strong>Created At:</strong> {{ workshop.create_at }}</p>
+<p><strong>Owner:</strong> {{ workshop.owner }}</p>
+<p><strong>Avatar:</strong> <img src="{{ workshop.avatar.url }}" alt="{{ workshop.name }}"></p>
+
+<h1>Workshop Subscription Details</h1>
+<p>Workshop: {{ workshop.name }}</p>
+
+{% if subscription %}
+<p>Subscription Status: {% if subscription.is_active %}Active{% else %}Inactive{% endif %}</p>
+{% else %}
+<p>No subscription purchased for this workshop.</p>
+{% endif %}
+
+<a href="{% url 'subscription_detail' workshop.pk %}">
+    <button type="button">Manage Subscription</button>
+</a>
+
+
+{% if messages %}
+{% for message in messages %}
+<div class="alert {{ message.tags }}">{{ message }}</div>
+{% endfor %}
+{% endif %}
+{% endblock %}
